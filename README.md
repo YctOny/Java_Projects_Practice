@@ -1,2 +1,2 @@
 # Java_Projects_Practice
-Small Projects in here.
+Small java Projects in here.
