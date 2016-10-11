@@ -3,8 +3,12 @@ package com.Fractions;
 public class Main {
 
     public static void main(String[] args) {
+        /*
 	    Fractions f = new Fractions(0,12,6);
-        System.out.println(f.returnResult());
+        Fractions f2 = new Fractions(0,1000,11);
+        String s = f.multiply(f2);
+        System.out.println(s);
+        */
     }
 }
 
@@ -14,12 +18,11 @@ class Fractions {
     private int numerator = 0;
     private int denominator = 1;
 
+    //  a(b/c)  a->mix b->numerator c->denominator
+
     Fractions(int mix,int numerator,int denominator) {
 
-        int arr[] = null;
-        arr = simplify(mix,numerator,denominator);
-        this.numerator = arr[0];
-        this.denominator = arr[1];
+        init(mix,numerator,denominator);
     }
 
     /*
@@ -29,6 +32,15 @@ class Fractions {
     }
     */
 
+    private void init(int mix,int numerator,int denominator) {
+        int arr[] = null;
+        arr = simplify(mix,numerator,denominator);
+        this.numerator = arr[0];
+        this.denominator = arr[1];
+    }//Initialize the object.
+
+
+    //getter and setters:
     public int getMix() {
         return mix;
     }
@@ -70,8 +82,9 @@ class Fractions {
             }
             return "Result: "+result+" or "+result2;
         }
-    }
-    public String returnResult(int numerator, int denominator) {
+    }//Return a String of the fraction after some operations (simplify...).
+
+    private String returnResult(int numerator, int denominator) {
         String result = numerator +"/"+denominator;
         if(numerator<=denominator) {
             return "Result: "+result;//Proper fraction improper fraction mixed number
@@ -82,10 +95,10 @@ class Fractions {
             String result2 = tempMix+"("+tempRemainder+"/"+denominator+")";
             return "Result: "+result+" or "+result2;
         }
-    }
+    }//Return final fractions in standard format, for inner methods only.
 
     //addition，subtraction，multiplication and division
-    public void add(Fractions f) {
+    public String add(Fractions f) {
         int remainder = 0;
         int gcd = 0;
         int newDe = 0;
@@ -94,11 +107,11 @@ class Fractions {
         gcd = getGCD(denominator,f.getDenominator(),remainder,1);
         newDe = denominator*f.getDenominator()/gcd;
         newNumer = numerator*(f.getDenominator()/gcd)+f.getNumerator()*(denominator/gcd);
-        returnResult(newNumer,newDe);
+        return returnResult(newNumer,newDe);
 
     }
 
-    public void subtract(Fractions f) {
+    public String subtract(Fractions f) {
         int remainder = 0;
         int gcd = 0;
         int newDe = 0;
@@ -107,24 +120,24 @@ class Fractions {
         gcd = getGCD(denominator,f.getDenominator(),remainder,1);
         newDe = denominator*f.getDenominator()/gcd;
         newNumer = numerator*(f.getDenominator()/gcd)-f.getNumerator()*(denominator/gcd);
-        returnResult(newNumer,newDe);
+        return returnResult(newNumer,newDe);
     }
 
-    public void multiply(Fractions f) {
+    public String multiply(Fractions f) {
         int newNumer = numerator*f.getNumerator();
         int newDe = denominator*f.getDenominator();
         int []arr = simplify(0,newNumer,newDe);
-        returnResult(arr[0],arr[1]);
+        return returnResult(arr[0],arr[1]);
     }
 
-    public void divide(Fractions f) {
+    public String divide(Fractions f) {
         int newNumer = numerator*f.getDenominator();
         int newDe = denominator*f.getNumerator();
         int []arr = simplify(0,newNumer,newDe);
-        returnResult(arr[0],arr[1]);
+        return returnResult(arr[0],arr[1]);
     }
 
-    public int[] simplify(int mix,int numerator,int denominator) {
+    private int[] simplify(int mix,int numerator,int denominator) {
         int[] arr = null;
         if(mix==0)
             arr = factorization(numerator,denominator);
@@ -133,9 +146,9 @@ class Fractions {
             arr = factorization(numerator,denominator);
         }
         return arr;
-    }
+    }//Simplify a/b
 
-    public int[] factorization(int numerator,int denominator) {
+    private int[] factorization(int numerator,int denominator) {
 
         int remainder = 0;
         int gcd = 0;
@@ -148,9 +161,9 @@ class Fractions {
         }
         int [] arr = {numerator/gcd,denominator/gcd};
         return arr;
-    }
+    }//Factor (a/b)
 
-    public int getGCD (int numerator,int denominator,int remainder,int flag) {
+    private int getGCD (int numerator,int denominator,int remainder,int flag) {
         remainder = numerator%denominator;
         if(remainder == 0) {
             flag = denominator;
@@ -164,6 +177,6 @@ class Fractions {
             flag = getGCD(numerator,denominator,remainder,flag);
         }
         return flag;
-    }
+    }// Get greatest common divisor between two numbers.
 
 }
